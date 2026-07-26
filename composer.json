@@ -1,0 +1,52 @@
+{
+  "name": "yu-dev/module-ai-chat",
+  "description": "Magento 2 AI shopping assistant: floating chat widget for natural-language product search, recommendations, and Q&A — plus a conversation analytics dashboard for merchants.",
+  "type": "magento2-module",
+  "keywords": [
+    "magento",
+    "magento2",
+    "ai",
+    "chatbot",
+    "chat-widget",
+    "shopping-assistant",
+    "product-search",
+    "recommendations",
+    "llm",
+    "openai",
+    "claude",
+    "gemini",
+    "grok",
+    "conversation-analytics",
+    "ecommerce"
+  ],
+  "authors": [
+    {
+      "name": "Yuriy Akishin",
+      "email": "yuriy.akishin@gmail.com",
+      "homepage": "https://github.com/yuriyakishin"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/yuriyakishin/magento2-ai-chat/issues",
+    "source": "https://github.com/yuriyakishin/magento2-ai-chat"
+  },
+  "require": {
+    "php": ">=8.1",
+    "magento/framework": "*",
+    "magento/module-eav": "*",
+    "magento/module-configurable-product": "*",
+    "yu-dev/module-ai-llm": "*",
+    "yu-dev/module-ai-search-engine": "*"
+  },
+  "license": [
+    "MIT"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Yu\\AiChat\\": ""
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<?php
+/** @var \Yu\AiChat\Block\Adminhtml\PeriodSummary $block */
+$totals = $block->getTotals();
+$period = $block->getPeriod();
+$conversationsUrl = $block->getConversationsUrl();
+?>
+<div class="yu-aichat-period-summary">
+    <div class="admin__data-grid-header">
+        <strong><?= $block->escapeHtml(__('Period:')) ?></strong>
+        <div class="yu-aichat-period-list">
+            <?php foreach ($block->getAvailablePeriods() as $key => $label): ?>
+                <?php $key = (string)$key; ?>
+                <?php if ($key === $period): ?>
+                    <span class="yu-aichat-period-current">
+                        <?= $block->escapeHtml(__($label)) ?>
+                    </span>
+                <?php else: ?>
+                    <a href="<?= $block->escapeUrl($block->getPeriodUrl($key)) ?>">
+                        <?= $block->escapeHtml(__($label)) ?>
+                    </a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+        <?php if ($conversationsUrl !== null): ?>
+            <span class="yu-aichat-separator">|</span>
+            <a href="<?= $block->escapeUrl($conversationsUrl) ?>">
+                <?= $block->escapeHtml(__('View all conversations')) ?> &rarr;
+            </a>
+        <?php endif; ?>
+    </div>
+
+    <div class="yu-aichat-kpi-row">
+        <div class="yu-aichat-kpi-item">
+            <span class="yu-aichat-kpi-value"><?= (int)$totals['conversations'] ?></span>
+            <span class="yu-aichat-kpi-label"><?= $block->escapeHtml(__('Conversations')) ?></span>
+        </div>
+        <div class="yu-aichat-kpi-item">
+            <span class="yu-aichat-kpi-value"><?= (int)$totals['user_messages'] ?></span>
+            <span class="yu-aichat-kpi-label"><?= $block->escapeHtml(__('Customer Messages')) ?></span>
+        </div>
+        <div class="yu-aichat-kpi-item">
+            <span class="yu-aichat-kpi-value"><?= (int)$totals['avg_latency_ms'] ?> ms</span>
+            <span class="yu-aichat-kpi-label"><?= $block->escapeHtml(__('Avg. Response Time')) ?></span>
+        </div>
+        <div class="yu-aichat-kpi-item">
+            <span class="yu-aichat-kpi-value"><?= (int)$totals['total_tokens'] ?></span>
+            <span class="yu-aichat-kpi-label"><?= $block->escapeHtml(__('Total Tokens')) ?></span>
+        </div>
+        <div class="yu-aichat-kpi-item">
+            <span class="yu-aichat-kpi-value">$<?= $block->escapeHtml((string)$totals['total_cost']) ?></span>
+            <span class="yu-aichat-kpi-label"><?= $block->escapeHtml(__('Estimated Cost')) ?></span>
+        </div>
+    </div>
+</div>

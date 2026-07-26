@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="yu_aichat" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Chat AI</label>
+            <tab>yu_ai</tab>
+            <resource>Yu_AiChat::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="position" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Widget Position</label>
+                    <source_model>Yu\AiChat\Model\Config\Source\Position</source_model>
+                </field>
+            </group>
+            <group id="chat" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Chat</label>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Widget Title</label>
+                </field>
+                <field id="welcome_message" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Welcome Message</label>
+                </field>
+                <field id="suggested_questions" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Suggested Questions</label>
+                    <comment>One question per line.</comment>
+                </field>
+                <field id="system_prompt" translate="label comment" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>System Prompt</label>
+                    <comment>Instructions for the AI assistant. {{store_name}} is replaced with the store name.</comment>
+                </field>
+                <field id="store_facts" translate="label comment" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Facts</label>
+                    <comment>Free-text facts the assistant may cite: returns policy, delivery times, warranty. Shipping and payment methods are read from Magento configuration automatically.</comment>
+                </field>
+                <field id="temperature" translate="label comment" type="text" sortOrder="55" showInDefault="1" showInWebsite="1">
+                    <label>Temperature</label>
+                    <backend_model>Yu\AiLlm\Model\Config\Backend\Temperature</backend_model>
+                    <comment>0–1. Lower is more focused, higher is more creative. Leave empty to use the shared Temperature from AI &gt; LLM AI &gt; Shared Settings.</comment>
+                </field>
+                <field id="theme" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Color Theme</label>
+                    <source_model>Yu\AiChat\Model\Config\Source\Theme</source_model>
+                    <comment>Choose a predefined theme or select Custom to set your own colors.</comment>
+                </field>
+                <field id="custom_primary_color" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Primary Color</label>
+                    <backend_model>Yu\AiChat\Model\Config\Backend\HexColor</backend_model>
+                    <frontend_model>Yu\AiChat\Block\Adminhtml\Form\Field\ColorPicker</frontend_model>
+                    <comment>Hex color, e.g. #1979c3. Used for the button, header, user bubbles and chips.</comment>
+                    <depends>
+                        <field id="theme">custom</field>
+                    </depends>
+                </field>
+                <field id="custom_background_color" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Panel Background</label>
+                    <backend_model>Yu\AiChat\Model\Config\Backend\HexColor</backend_model>
+                    <frontend_model>Yu\AiChat\Block\Adminhtml\Form\Field\ColorPicker</frontend_model>
+                    <comment>Hex color, e.g. #ffffff.</comment>
+                    <depends>
+                        <field id="theme">custom</field>
+                    </depends>
+                </field>
+                <field id="custom_assistant_color" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Assistant Bubble Background</label>
+                    <backend_model>Yu\AiChat\Model\Config\Backend\HexColor</backend_model>
+                    <frontend_model>Yu\AiChat\Block\Adminhtml\Form\Field\ColorPicker</frontend_model>
+                    <comment>Hex color, e.g. #f0f1f3.</comment>
+                    <depends>
+                        <field id="theme">custom</field>
+                    </depends>
+                </field>
+                <field id="custom_text_color" translate="label comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Text Color</label>
+                    <backend_model>Yu\AiChat\Model\Config\Backend\HexColor</backend_model>
+                    <frontend_model>Yu\AiChat\Block\Adminhtml\Form\Field\ColorPicker</frontend_model>
+                    <comment>Hex color, e.g. #333333.</comment>
+                    <depends>
+                        <field id="theme">custom</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="analytics" translate="label" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Analytics</label>
+                <field id="classification_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Topic Classification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Nightly cron classifies conversations by topic using your configured AI provider. Cost is a fraction of a cent per hundred conversations.</comment>
+                </field>
+                <field id="insights_enabled" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Business Insights</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Weekly cron (and the Dashboard button) generates merchant-facing insights from chat analytics using your AI provider.</comment>
+                </field>
+                <field id="retention_days" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Data Retention, days</label>
+                    <frontend_class>validate-digits</frontend_class>
+                    <comment>Conversations older than this are deleted daily. 0 = keep forever.</comment>
+                </field>
+            </group>
+            <group id="search" translate="label" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Product Search</label>
+                <field id="like_fallback_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>SQL Fallback When Engine Unavailable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>When the search engine (Elasticsearch/OpenSearch) fails, chat search falls back to a SQL LIKE scan. Disable on very large catalogs: the fallback scans the product table.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Yu_AiChat::chat"
+             title="Chat AI"
+             module="Yu_AiChat"
+             sortOrder="10"
+             parent="Magento_Reports::report"
+             resource="Yu_AiChat::analytics"/>
+        <add id="Yu_AiChat::chat_dashboard"
+             title="Dashboard"
+             module="Yu_AiChat"
+             sortOrder="10"
+             parent="Yu_AiChat::chat"
+             action="aichat/dashboard/index"
+             resource="Yu_AiChat::analytics"/>
+        <add id="Yu_AiChat::conversations"
+             title="Conversations"
+             module="Yu_AiChat"
+             sortOrder="20"
+             parent="Yu_AiChat::chat"
+             action="aichat/conversation/index"
+             resource="Yu_AiChat::analytics"/>
+    </menu>
+</config>

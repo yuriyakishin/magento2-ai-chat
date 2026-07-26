@@ -1,0 +1,57 @@
+<?php
+/** @var \Yu\AiChat\Block\Adminhtml\Conversation\View $block */
+$conversation = $block->getConversation();
+?>
+<?php if ($conversation === null): ?>
+    <p><?= $block->escapeHtml(__('Conversation not found.')) ?></p>
+<?php else: ?>
+    <div class="admin__fieldset-wrapper" style="margin-bottom: 16px; padding: 12px; border: 1px solid #ccc;">
+        <strong><?= $block->escapeHtml(__('Channel:')) ?></strong>
+        <?= $block->escapeHtml((string)$conversation->getData('channel')) ?>
+        &nbsp;|&nbsp;
+        <strong><?= $block->escapeHtml(__('Topic:')) ?></strong>
+        <?= $block->escapeHtml((string)($conversation->getData('topic') ?: __('unclassified'))) ?>
+        &nbsp;|&nbsp;
+        <strong><?= $block->escapeHtml(__('Provider / Model:')) ?></strong>
+        <?= $block->escapeHtml((string)$conversation->getData('provider')) ?> /
+        <?= $block->escapeHtml((string)$conversation->getData('model')) ?>
+        &nbsp;|&nbsp;
+        <strong><?= $block->escapeHtml(__('Started:')) ?></strong>
+        <?= $block->escapeHtml((string)$conversation->getData('created_at')) ?>
+    </div>
+
+    <div class="yu-aichat-thread">
+        <?php foreach ($block->getMessages() as $message): ?>
+            <?php
+            $role = $block->getMessageRole($message);
+            $background = match ($role) {
+                'user' => '#eef2ff',
+                'assistant' => '#eefaf0',
+                default => '#f7f7f7',
+            };
+            ?>
+            <div class="admin__fieldset-wrapper"
+                 style="margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; background: <?= $background ?>;">
+                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">
+                    <strong><?= $block->escapeHtml(strtoupper($role)) ?></strong>
+                    &nbsp;&middot;&nbsp;<?= $block->escapeHtml((string)$message->getData('created_at')) ?>
+                    <?php if ($message->getData('cost') !== null): ?>
+                        &nbsp;&middot;&nbsp;$<?= $block->escapeHtml((string)$message->getData('cost')) ?>
+                        (<?= (int)$message->getData('total_tokens') ?> <?= $block->escapeHtml(__('tokens')) ?>,
+                        <?= (int)$message->getData('latency_ms') ?> ms)
+                    <?php endif; ?>
+                </div>
+                <?php if ($role === 'tool'): ?>
+                    <pre style="white-space: pre-wrap; margin: 0;"><?= $block->escapeHtml(
+                        $block->formatToolContent($block->getMessageContent($message))
+                    ) ?></pre>
+                <?php else: ?>
+                    <div style="white-space: pre-wrap;"><?= $block->escapeHtml($block->getMessageContent($message)) ?></div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+        <?php if ($block->getMessages() === []): ?>
+            <p><?= $block->escapeHtml(__('No messages in this conversation.')) ?></p>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

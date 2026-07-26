@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <yu_aichat>
+            <general>
+                <enabled>0</enabled>
+                <position>bottom-right</position>
+            </general>
+            <chat>
+                <theme>luma-blue</theme>
+                <custom_primary_color>#1979c3</custom_primary_color>
+                <custom_background_color>#ffffff</custom_background_color>
+                <custom_assistant_color>#f0f1f3</custom_assistant_color>
+                <custom_text_color>#333333</custom_text_color>
+                <title>AI Assistant</title>
+                <welcome_message>Hi! I'm your AI shopping assistant. How can I help you today?</welcome_message>
+                <suggested_questions>What are your bestsellers?
+Do you have any promotions right now?
+How much does shipping cost?</suggested_questions>
+                <system_prompt>You are a helpful AI shopping assistant for {{store_name}}, an online store. Answer customer questions about products, shipping, payment methods and returns politely and concisely. If you do not know a store-specific detail, say so honestly and suggest contacting the store directly. Do not invent products, prices or policies.</system_prompt>
+            </chat>
+            <analytics>
+                <classification_enabled>0</classification_enabled>
+                <insights_enabled>0</insights_enabled>
+                <retention_days>0</retention_days>
+            </analytics>
+            <search>
+                <like_fallback_enabled>0</like_fallback_enabled>
+            </search>
+        </yu_aichat>
+    </default>
+</config>

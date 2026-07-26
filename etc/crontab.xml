@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="yu_aichat_classify_topics" instance="Yu\AiChat\Cron\ClassifyTopics" method="execute">
+            <schedule>0 2 * * *</schedule>
+        </job>
+        <job name="yu_aichat_generate_insights" instance="Yu\AiChat\Cron\GenerateInsights" method="execute">
+            <schedule>0 3 * * 1</schedule>
+        </job>
+        <job name="yu_aichat_retention_cleanup" instance="Yu\AiChat\Cron\RetentionCleanup" method="execute">
+            <schedule>0 4 * * *</schedule>
+        </job>
+    </group>
+</config>

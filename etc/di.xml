@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Development stand-in: switch back to Yu\AiChat\Model\StubChatService
+         to demo the widget without any API keys. -->
+    <preference for="Yu\AiChat\Api\ChatServiceInterface" type="Yu\AiChat\Model\ChatService"/>
+    <preference for="Yu\AiChat\Api\Data\ConversationOwnerInterface" type="Yu\AiChat\Model\ConversationOwner"/>
+    <preference for="Yu\AiChat\Api\Data\PageContextInterface" type="Yu\AiChat\Model\PageContext"/>
+    <preference for="Yu\AiChat\Api\Data\ToolContextInterface" type="Yu\AiChat\Model\Tools\ToolContext"/>
+    <preference for="Yu\AiChat\Api\Data\ChatResultInterface" type="Yu\AiChat\Model\ChatResult"/>
+
+    <!-- LLM tools. Third-party modules add their own entry here (see
+         docs/tools.md); the key is informational — the tool's getName() wins. -->
+    <type name="Yu\AiChat\Model\Tools\ToolRegistry">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+            <argument name="tools" xsi:type="array">
+                <item name="search_products" xsi:type="object">Yu\AiChat\Model\Tools\Product\Search\Proxy</item>
+                <item name="get_product" xsi:type="object">Yu\AiChat\Model\Tools\Product\Details\Proxy</item>
+                <item name="get_store_info" xsi:type="object">Yu\AiChat\Model\Tools\Store\Info\Proxy</item>
+                <item name="compare_products" xsi:type="object">Yu\AiChat\Model\Tools\Product\Compare\Proxy</item>
+                <item name="get_related_products" xsi:type="object">Yu\AiChat\Model\Tools\Product\Related\Proxy</item>
+                <item name="browse_category" xsi:type="object">Yu\AiChat\Model\Tools\Category\Browse\Proxy</item>
+                <item name="check_promotions" xsi:type="object">Yu\AiChat\Model\Tools\Store\Promotions\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Yu\AiChat\Model\Tools\Product\Search">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="YuAiChatLogHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/yu_aichat.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="YuAiChatLogger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">yu_aichat</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">YuAiChatLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Yu\AiChat\Model\ChatService">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Model\Analytics\TopicClassifier">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Model\Analytics\InsightsGenerator">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Cron\ClassifyTopics">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Cron\GenerateInsights">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Cron\RetentionCleanup">
+        <arguments>
+            <argument name="logger" xsi:type="object">YuAiChatLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="yu_aichat_conversation_listing_data_source" xsi:type="string">Yu\AiChat\Model\ResourceModel\Conversation\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Yu\AiChat\Model\ResourceModel\Conversation\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">yu_aichat_conversation</argument>
+            <argument name="resourceModel" xsi:type="string">Yu\AiChat\Model\ResourceModel\Conversation</argument>
+        </arguments>
+    </type>
+
+    <!-- Widget color themes. Third-party modules register their own theme by
+         adding an item to this argument from their di.xml; the admin select
+         picks it up automatically. See docs/themes.md. -->
+    <type name="Yu\AiChat\Model\ThemePalette">
+        <arguments>
+            <argument name="themes" xsi:type="array">
+                <item name="luma-blue" xsi:type="array">
+                    <item name="label" xsi:type="string">Luma Blue</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#1979c3</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#f0f1f3</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#f5f5f5</item>
+                    </item>
+                </item>
+                <item name="emerald" xsi:type="array">
+                    <item name="label" xsi:type="string">Emerald</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#059669</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#eef4f0</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#f0f7f3</item>
+                    </item>
+                </item>
+                <item name="teal" xsi:type="array">
+                    <item name="label" xsi:type="string">Teal</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#0d9488</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#edf4f3</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#eff6f5</item>
+                    </item>
+                </item>
+                <item name="violet" xsi:type="array">
+                    <item name="label" xsi:type="string">Violet</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#7c3aed</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#f2f0f7</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#f5f2fa</item>
+                    </item>
+                </item>
+                <item name="ruby" xsi:type="array">
+                    <item name="label" xsi:type="string">Ruby</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#dc2626</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#f6f0f0</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#faf2f2</item>
+                    </item>
+                </item>
+                <item name="sunset" xsi:type="array">
+                    <item name="label" xsi:type="string">Sunset</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#ea580c</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#f6f1ee</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#faf4f0</item>
+                    </item>
+                </item>
+                <item name="rose" xsi:type="array">
+                    <item name="label" xsi:type="string">Rose</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#db2777</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#333333</item>
+                        <item name="assistant-bg" xsi:type="string">#f6f0f3</item>
+                        <item name="border" xsi:type="string">#e0e0e0</item>
+                        <item name="muted" xsi:type="string">#999999</item>
+                        <item name="hover" xsi:type="string">#faf2f6</item>
+                    </item>
+                </item>
+                <item name="monochrome" xsi:type="array">
+                    <item name="label" xsi:type="string">Monochrome</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#333333</item>
+                        <item name="bg" xsi:type="string">#ffffff</item>
+                        <item name="text" xsi:type="string">#222222</item>
+                        <item name="assistant-bg" xsi:type="string">#f0f0f0</item>
+                        <item name="border" xsi:type="string">#dddddd</item>
+                        <item name="muted" xsi:type="string">#888888</item>
+                        <item name="hover" xsi:type="string">#f5f5f5</item>
+                    </item>
+                </item>
+                <item name="dark" xsi:type="array">
+                    <item name="label" xsi:type="string">Dark</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#3b82f6</item>
+                        <item name="bg" xsi:type="string">#1f2128</item>
+                        <item name="text" xsi:type="string">#e7e8ea</item>
+                        <item name="assistant-bg" xsi:type="string">#2b2e37</item>
+                        <item name="border" xsi:type="string">#3a3e4a</item>
+                        <item name="muted" xsi:type="string">#8a8f9c</item>
+                        <item name="hover" xsi:type="string">#2a2d36</item>
+                    </item>
+                </item>
+                <item name="midnight" xsi:type="array">
+                    <item name="label" xsi:type="string">Midnight</item>
+                    <item name="colors" xsi:type="array">
+                        <item name="primary" xsi:type="string">#6366f1</item>
+                        <item name="bg" xsi:type="string">#0f172a</item>
+                        <item name="text" xsi:type="string">#e2e8f0</item>
+                        <item name="assistant-bg" xsi:type="string">#1e293b</item>
+                        <item name="border" xsi:type="string">#334155</item>
+                        <item name="muted" xsi:type="string">#94a3b8</item>
+                        <item name="hover" xsi:type="string">#1b2436</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
