@@ -1,0 +1,22 @@
+<div class="yu-aichat-kpi-row">
+    <div class="yu-aichat-kpi-item">
+        <span class="yu-aichat-kpi-value"><!-- ko text: (rawData().aichat_totals || {}).conversations || 0 --><!-- /ko --></span>
+        <span class="yu-aichat-kpi-label" translate="'Conversations'"></span>
+    </div>
+    <div class="yu-aichat-kpi-item">
+        <span class="yu-aichat-kpi-value"><!-- ko text: (rawData().aichat_totals || {}).user_messages || 0 --><!-- /ko --></span>
+        <span class="yu-aichat-kpi-label" translate="'Customer Messages'"></span>
+    </div>
+    <div class="yu-aichat-kpi-item">
+        <span class="yu-aichat-kpi-value"><!-- ko text: (rawData().aichat_totals || {}).avg_latency_ms || 0 --><!-- /ko --> ms</span>
+        <span class="yu-aichat-kpi-label" translate="'Avg. Response Time'"></span>
+    </div>
+    <div class="yu-aichat-kpi-item">
+        <span class="yu-aichat-kpi-value"><!-- ko text: (rawData().aichat_totals || {}).total_tokens || 0 --><!-- /ko --></span>
+        <span class="yu-aichat-kpi-label" translate="'Total Tokens'"></span>
+    </div>
+    <div class="yu-aichat-kpi-item">
+        <span class="yu-aichat-kpi-value">$<!-- ko text: (rawData().aichat_totals || {}).total_cost || 0 --><!-- /ko --></span>
+        <span class="yu-aichat-kpi-label" translate="'Estimated Cost'"></span>
+    </div>
+</div>

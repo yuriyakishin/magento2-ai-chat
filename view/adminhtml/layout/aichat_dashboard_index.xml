@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Yu\AiChat\Block\Adminhtml\Dashboard" name="yu_aichat_dashboard"
+                   template="Yu_AiChat::dashboard.phtml">
+                <block class="Yu\AiChat\Block\Adminhtml\PeriodSummary" name="period_summary" as="period_summary"
+                       template="Yu_AiChat::period_summary.phtml">
+                    <arguments>
+                        <argument name="show_conversations_link" xsi:type="boolean">true</argument>
+                        <argument name="period_url_path" xsi:type="string">aichat/dashboard/index</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

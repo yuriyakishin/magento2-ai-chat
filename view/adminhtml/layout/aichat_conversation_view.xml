@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.actions.toolbar">
+            <block class="Yu\AiChat\Block\Adminhtml\Conversation\BackButton" name="yu_aichat_conversation_back_button"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Yu\AiChat\Block\Adminhtml\Conversation\View" name="yu_aichat_conversation_view"
+                   template="Yu_AiChat::conversation/view.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

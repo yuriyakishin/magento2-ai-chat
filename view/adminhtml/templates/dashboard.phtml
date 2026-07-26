@@ -1,0 +1,219 @@
+<?php
+/** @var \Yu\AiChat\Block\Adminhtml\Dashboard $block */
+$insights = $block->getStoredInsights();
+?>
+<div class="yu-aichat-dashboard">
+    <?= $block->getChildHtml('period_summary') ?>
+
+    <?php if ($block->isInsightsEnabled()): ?>
+    <div class="yu-aichat-panel">
+        <div class="yu-aichat-panel-head">
+            <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Business Insights')) ?></h3>
+            <form action="<?= $block->escapeUrl($block->getRefreshInsightsUrl()) ?>" method="post">
+                <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+                <button type="submit" class="action-secondary">
+                    <?= $block->escapeHtml(__('Refresh')) ?>
+                </button>
+            </form>
+        </div>
+        <?php if ($insights !== null): ?>
+            <p class="yu-aichat-panel-meta">
+                <?= $block->escapeHtml(__('Generated at %1', $insights['generated_at'])) ?>
+            </p>
+            <div class="yu-aichat-panel-body"><?= $block->escapeHtml($insights['text']) ?></div>
+        <?php else: ?>
+            <p><?= $block->escapeHtml(__('No insights generated yet. Click Refresh to generate one now.')) ?></p>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+    <div class="yu-aichat-panel">
+        <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('System Tasks (Background AI Usage)')) ?></h3>
+        <p class="yu-aichat-panel-meta">
+            <?= $block->escapeHtml(__('Topic classification and insight generation run in the background, outside customer conversations - their AI usage does not appear in the reports above.')) ?>
+        </p>
+        <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+            <table class="data-grid">
+                <thead>
+                    <tr>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Task')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Date')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Provider / Model')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Items')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Tokens')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Cost')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Status')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php $taskLabels = ['classify_topics' => __('Classify Topics'), 'generate_insights' => __('Generate Insights')]; ?>
+                <?php foreach ($block->getRecentSystemTasks() as $row): ?>
+                    <tr<?= $row['status'] === 'error' ? ' class="yu-aichat-task-error"' : '' ?>>
+                        <td><?= $block->escapeHtml((string)($taskLabels[$row['task']] ?? $row['task'])) ?></td>
+                        <td><?= $block->escapeHtml((string)$row['created_at']) ?></td>
+                        <td><?= $block->escapeHtml(trim(($row['provider'] ?? '') . ' / ' . ($row['model'] ?? ''), ' /')) ?></td>
+                        <td><?= $row['items_processed'] !== null ? (int)$row['items_processed'] : '—' ?></td>
+                        <td><?= $row['prompt_tokens'] !== null
+                            ? (int)$row['prompt_tokens'] + (int)$row['completion_tokens']
+                            : '—' ?></td>
+                        <td><?= $row['cost'] !== null ? '$' . $block->escapeHtml((string)round((float)$row['cost'], 4)) : '—' ?></td>
+                        <td>
+                            <?php if ($row['status'] === 'error'): ?>
+                                <span title="<?= $block->escapeHtmlAttr((string)$row['error_message']) ?>">
+                                    <?= $block->escapeHtml(__('Error')) ?>
+                                </span>
+                            <?php elseif ($row['status'] === 'skipped'): ?>
+                                <?= $block->escapeHtml(__('Skipped (no provider)')) ?>
+                            <?php else: ?>
+                                <?= $block->escapeHtml(__('Success')) ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if ($block->getRecentSystemTasks() === []): ?>
+                    <tr><td colspan="7"><?= $block->escapeHtml(__('No background task runs yet.')) ?></td></tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="yu-aichat-columns">
+        <div class="yu-aichat-column">
+            <div class="yu-aichat-panel">
+                <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Cost by Provider / Model')) ?></h3>
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Provider')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Model')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Replies')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Tokens')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Cost')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getCostByProvider() as $row): ?>
+                            <tr>
+                                <td><?= $block->escapeHtml($row['provider']) ?></td>
+                                <td><?= $block->escapeHtml($row['model']) ?></td>
+                                <td><?= (int)$row['replies'] ?></td>
+                                <td><?= (int)$row['tokens'] ?></td>
+                                <td>$<?= $block->escapeHtml((string)round((float)$row['cost'], 4)) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if ($block->getCostByProvider() === []): ?>
+                            <tr><td colspan="5"><?= $block->escapeHtml(__('No data for this period.')) ?></td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="yu-aichat-panel">
+                <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Topics')) ?></h3>
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Topic')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Conversations')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getTopics() as $row): ?>
+                            <tr>
+                                <td><?= $block->escapeHtml((string)$row['topic']) ?></td>
+                                <td><?= (int)$row['cnt'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if ($block->getTopics() === []): ?>
+                            <tr><td colspan="2"><?= $block->escapeHtml(__('No data for this period.')) ?></td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="yu-aichat-column">
+            <div class="yu-aichat-panel">
+                <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Popular Questions')) ?></h3>
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Question')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Count')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getPopularQuestions() as $row): ?>
+                            <tr>
+                                <td><?= $block->escapeHtml((string)$row['question']) ?></td>
+                                <td><?= (int)$row['cnt'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if ($block->getPopularQuestions() === []): ?>
+                            <tr><td colspan="2"><?= $block->escapeHtml(__('No data for this period.')) ?></td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="yu-aichat-panel">
+                <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Popular Products')) ?></h3>
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Product')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('SKU')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Mentions')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getPopularProducts() as $row): ?>
+                            <tr>
+                                <td><?= $block->escapeHtml((string)$row['name']) ?></td>
+                                <td><?= $block->escapeHtml((string)$row['sku']) ?></td>
+                                <td><?= (int)$row['cnt'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if ($block->getPopularProducts() === []): ?>
+                            <tr><td colspan="3"><?= $block->escapeHtml(__('No data for this period.')) ?></td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="yu-aichat-panel">
+                <h3 class="yu-aichat-panel-title"><?= $block->escapeHtml(__('Missing Products (zero-result searches)')) ?></h3>
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Search Query')) ?></th>
+                                <th class="data-grid-th"><?= $block->escapeHtml(__('Count')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getMissingProducts() as $row): ?>
+                            <tr>
+                                <td><?= $block->escapeHtml((string)$row['query']) ?></td>
+                                <td><?= (int)$row['cnt'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if ($block->getMissingProducts() === []): ?>
+                            <tr><td colspan="2"><?= $block->escapeHtml(__('No data for this period.')) ?></td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

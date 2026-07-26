@@ -1,0 +1,12 @@
+<?php
+/** @var \Yu\AiChat\Block\Widget $block */
+/** @var \Magento\Framework\Escaper $escaper */
+if (!$block->isEnabled()) {
+    return;
+}
+?>
+<link rel="stylesheet" href="<?= $escaper->escapeUrl($block->getViewFileUrl('Yu_AiChat::css/widget.css')) ?>"/>
+<style><?= /* @noEscape */ $block->getThemeCss() ?></style>
+<div id="yu-aichat"></div>
+<script type="application/json" id="yu-aichat-config"><?= /* @noEscape */ $block->getJsonConfig() ?></script>
+<script defer src="<?= $escaper->escapeUrl($block->getViewFileUrl('Yu_AiChat::js/widget.js')) ?>"></script>

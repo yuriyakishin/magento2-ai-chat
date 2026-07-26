@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">yu_aichat_conversation_listing.yu_aichat_conversation_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>yu_aichat_conversation_columns</spinner>
+        <deps>
+            <dep>yu_aichat_conversation_listing.yu_aichat_conversation_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="yu_aichat_conversation_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">conversation_id</param>
+                <param name="cacheRequests" xsi:type="boolean">false</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Yu_AiChat::analytics</aclResource>
+        <dataProvider class="Yu\AiChat\Ui\Component\Listing\ConversationDataProvider"
+                       name="yu_aichat_conversation_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>conversation_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <container name="aichat_conversation_summary"
+               sortOrder="5"
+               component="Yu_AiChat/js/conversation-summary"/>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="yu_aichat_conversation_columns">
+        <column name="conversation_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created</label>
+            </settings>
+        </column>
+        <column name="channel">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Channel</label>
+            </settings>
+        </column>
+        <column name="topic">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Topic</label>
+            </settings>
+        </column>
+        <column name="provider">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Provider</label>
+            </settings>
+        </column>
+        <column name="model">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Model</label>
+            </settings>
+        </column>
+        <column name="message_count">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Messages</label>
+            </settings>
+        </column>
+        <column name="total_cost">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Cost</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Yu\AiChat\Ui\Component\Listing\Column\ConversationActions">
+            <settings>
+                <indexField>conversation_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

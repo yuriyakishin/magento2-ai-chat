@@ -1,0 +1,63 @@
+{
+    "yu_aichat_conversation": {
+        "column": {
+            "conversation_id": true,
+            "uuid": true,
+            "customer_id": true,
+            "guest_token": true,
+            "channel": true,
+            "external_id": true,
+            "store_id": true,
+            "locale": true,
+            "title": true,
+            "provider": true,
+            "model": true,
+            "created_at": true,
+            "updated_at": true,
+            "topic": true
+        },
+        "index": {
+            "YU_AICHAT_CONVERSATION_CUSTOMER_ID": true,
+            "YU_AICHAT_CONVERSATION_GUEST_TOKEN": true,
+            "YU_AICHAT_CONVERSATION_TOPIC": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "YU_AICHAT_CONVERSATION_UUID": true,
+            "YU_AICHAT_CONVERSATION_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true,
+            "YU_AICHAT_CONVERSATION_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "yu_aichat_message": {
+        "column": {
+            "message_id": true,
+            "conversation_id": true,
+            "role": true,
+            "content": true,
+            "status": true,
+            "prompt_tokens": true,
+            "completion_tokens": true,
+            "total_tokens": true,
+            "cost": true,
+            "latency_ms": true,
+            "page_type": true,
+            "product_id": true,
+            "category_id": true,
+            "url": true,
+            "referrer": true,
+            "customer_group_id": true,
+            "created_at": true,
+            "provider": true,
+            "model": true
+        },
+        "index": {
+            "YU_AICHAT_MESSAGE_CONVERSATION_ID": true,
+            "YU_AICHAT_MESSAGE_PRODUCT_ID": true,
+            "YU_AICHAT_MESSAGE_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_58F93D4CDCF2AA27CD9B4B30CB65490C": true
+        }
+    }
+}

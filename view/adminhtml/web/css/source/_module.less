@@ -1,0 +1,124 @@
+//
+//  Yu_AiChat dashboard
+//  ---------------------------------------------
+
+.yu-aichat-period-summary {
+    .admin__data-grid-header {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem;
+        margin-bottom: 2rem;
+    }
+}
+
+.yu-aichat-period-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+    gap: .8rem;
+
+    a {
+        text-decoration: underline dotted;
+    }
+}
+
+.yu-aichat-separator {
+    color: @color-gray85;
+}
+
+.yu-aichat-period-current {
+    background: @color-gray98;
+    border: 1px solid @color-gray85;
+    display: inline-block;
+    font-weight: @font-weight__semibold;
+    padding: .4rem 1rem;
+}
+
+//
+//  KPI tiles
+//  ---------------------------------------------
+
+.yu-aichat-kpi-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    margin-bottom: 3rem;
+}
+
+.yu-aichat-kpi-item {
+    background: @color-white;
+    border: 1px solid @color-gray85;
+    border-top: 3px solid @color-phoenix;
+    flex: 1 1 160px;
+    min-width: 160px;
+    padding: 1.6rem 2rem;
+}
+
+.yu-aichat-kpi-value {
+    color: @color-gray20;
+    display: block;
+    font-size: 2.4rem;
+    font-weight: @font-weight__semibold;
+    line-height: 1.2;
+}
+
+.yu-aichat-kpi-label {
+    color: @color-gray40;
+    display: block;
+    font-size: 1.2rem;
+    margin-top: .4rem;
+}
+
+//
+//  Panels (insights + data tables)
+//  ---------------------------------------------
+
+.yu-aichat-panel {
+    background: @color-white;
+    border: 1px solid @color-gray85;
+    margin-bottom: 3rem;
+    padding: 2rem;
+}
+
+.yu-aichat-panel-head {
+    align-items: center;
+    border-bottom: 1px solid @color-gray85;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.2rem;
+}
+
+.yu-aichat-panel-title {
+    font-size: 1.6rem;
+    font-weight: @font-weight__bold;
+    margin: 0;
+}
+
+.yu-aichat-panel-meta {
+    color: @color-gray40;
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+}
+
+.yu-aichat-panel-body {
+    white-space: pre-wrap;
+}
+
+.yu-aichat-task-error {
+    background: fade(@color-phoenix, 8%);
+    color: @color-phoenix;
+}
+
+.yu-aichat-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.4rem;
+}
+
+.yu-aichat-column {
+    flex: 1 1 320px;
+    min-width: 320px;
+}
