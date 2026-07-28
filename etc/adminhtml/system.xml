@@ -12,10 +12,6 @@
                     <label>Enable Module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="position" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
-                    <label>Widget Position</label>
-                    <source_model>Yu\AiChat\Model\Config\Source\Position</source_model>
-                </field>
             </group>
             <group id="chat" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Chat</label>
@@ -41,6 +37,10 @@
                     <label>Temperature</label>
                     <backend_model>Yu\AiLlm\Model\Config\Backend\Temperature</backend_model>
                     <comment>0–1. Lower is more focused, higher is more creative. Leave empty to use the shared Temperature from AI &gt; LLM AI &gt; Shared Settings.</comment>
+                </field>
+                <field id="position" translate="label" type="select" sortOrder="58" showInDefault="1" showInWebsite="1">
+                    <label>Widget Position</label>
+                    <source_model>Yu\AiChat\Model\Config\Source\Position</source_model>
                 </field>
                 <field id="theme" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Color Theme</label>

@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
 class Config
 {
     public const XML_PATH_ENABLED = 'yu_aichat/general/enabled';
-    public const XML_PATH_POSITION = 'yu_aichat/general/position';
+    public const XML_PATH_POSITION = 'yu_aichat/chat/position';
     public const XML_PATH_THEME = 'yu_aichat/chat/theme';
     public const XML_PATH_CUSTOM_PRIMARY = 'yu_aichat/chat/custom_primary_color';
     public const XML_PATH_CUSTOM_BACKGROUND = 'yu_aichat/chat/custom_background_color';

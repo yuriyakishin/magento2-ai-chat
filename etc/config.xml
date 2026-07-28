@@ -5,9 +5,9 @@
         <yu_aichat>
             <general>
                 <enabled>0</enabled>
-                <position>bottom-right</position>
             </general>
             <chat>
+                <position>bottom-right</position>
                 <theme>luma-blue</theme>
                 <custom_primary_color>#1979c3</custom_primary_color>
                 <custom_background_color>#ffffff</custom_background_color>
