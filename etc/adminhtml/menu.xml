@@ -5,7 +5,7 @@
         <add id="Yu_AiChat::chat"
              title="Chat AI"
              module="Yu_AiChat"
-             sortOrder="10"
+             sortOrder="15"
              parent="Magento_Reports::report"
              resource="Yu_AiChat::analytics"/>
         <add id="Yu_AiChat::chat_dashboard"

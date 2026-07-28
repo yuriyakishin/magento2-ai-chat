@@ -1,14 +1,14 @@
 /* Add a grayscale AI sparkle icon next to "Chat AI" in the Reports submenu.
    "Chat AI" has no action of its own (only children), so Magento renders it
    as <strong class="submenu-group-title"> instead of <a>. */
-.admin__menu li[data-ui-id="menu-yu-aichat-chat"] > .submenu-group-title:before {
+.admin__menu li[data-ui-id="menu-yu-aichat-chat"] > .submenu-group-title:after {
     content: url('../images/ai-sparkle.svg');
     display: inline-block;
     width: 28px;
     height: 28px;
     margin-right: 0px;
     vertical-align: middle;
-    filter: contrast(0) grayscale(1) brightness(1.50);
+    filter: contrast(0) grayscale(1) brightness(1.90);
 }
 
 .admin__menu li[data-ui-id="menu-yu-aichat-chat"]:hover > .submenu-group-title:before {
